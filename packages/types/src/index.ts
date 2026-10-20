@@ -51,7 +51,7 @@ export interface AuthUser {
   countryCode: string;
   timezone: string;
   createdAt: string;
-  patient?: { onboardingStage: string; onboardingCompletedAt: string | null } | null;
+  patient?: { onboardingStage: string; onboardingCompletedAt: string | null; displayName: string | null } | null;
 }
 
 export interface PatientProfile {

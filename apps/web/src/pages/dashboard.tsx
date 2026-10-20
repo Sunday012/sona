@@ -12,7 +12,7 @@ function greeting() {
 export function DashboardPage() {
   const user = useQuery({ queryKey: ['me'], queryFn: () => api.me() });
   const sessions = useQuery({ queryKey: ['sessions'], queryFn: () => api.sessions() });
-  const name = user.data?.alias ?? 'there';
+  const name = user.data?.patient?.displayName ?? user.data?.alias ?? 'there';
   const active = sessions.data?.find((session) => session.status === 'ACTIVE' || session.status === 'QUEUED');
   return (
     <AppLayout title={`${greeting()}, ${name}.`} subtitle="How are you feeling today?">
