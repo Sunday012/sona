@@ -11,7 +11,7 @@ export function LandingPage() {
           <div className="hero-copy">
             <p className="eyebrow">Mental wellness, made human</p>
             <h1>
-              Feel better, sooner—with someone who <em>listens.</em>
+              Feel better, sooner with someone who <em>listens.</em>
             </h1>
             <p className="hero-lede">
               Connect privately with a licensed therapist—through chat, audio, or video—when life feels like
