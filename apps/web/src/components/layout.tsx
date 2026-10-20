@@ -1,5 +1,5 @@
 import { Link, useNavigate } from '@tanstack/react-router';
-import type { PropsWithChildren, ReactNode } from 'react';
+import { useEffect, useState, type PropsWithChildren, type ReactNode } from 'react';
 import { api } from '../lib/api';
 import { getSession, setSession, useSession } from '../lib/session';
 import { Icon } from './icons';
@@ -76,6 +76,35 @@ const nav = [
   { to: '/app/support', label: 'Find support', icon: 'heart' as const },
 ];
 
+type InstallPromptEvent = Event & {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+};
+
+function InstallButton() {
+  const [prompt, setPrompt] = useState<InstallPromptEvent | null>(null);
+  useEffect(() => {
+    const handlePrompt = (event: Event) => {
+      event.preventDefault();
+      setPrompt(event as InstallPromptEvent);
+    };
+    window.addEventListener('beforeinstallprompt', handlePrompt);
+    return () => window.removeEventListener('beforeinstallprompt', handlePrompt);
+  }, []);
+  if (!prompt) return null;
+  async function install() {
+    const installPrompt = prompt!;
+    await installPrompt.prompt();
+    await installPrompt.userChoice;
+    setPrompt(null);
+  }
+  return (
+    <button type="button" className="button button-small install-button" onClick={() => void install()}>
+      Install Sona
+    </button>
+  );
+}
+
 export function AppLayout({
   children,
   title,
@@ -120,6 +149,7 @@ export function AppLayout({
       <div className="app-main">
         <header className="app-topbar">
           <Logo />
+          <InstallButton />
           <button className="icon-button mobile-menu" type="button" aria-label="Open menu">
             <Icon name="menu" />
           </button>
