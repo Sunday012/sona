@@ -9,7 +9,7 @@ import {
   redirect,
   RouterProvider,
 } from '@tanstack/react-router';
-import { CreateAccountPage, SignInPage, VerifyEmailPage } from './pages/auth';
+import { CreateAccountPage, ResetPasswordPage, SignInPage, VerifyEmailPage } from './pages/auth';
 import { DashboardPage } from './pages/dashboard';
 import { LandingPage } from './pages/landing';
 import { OnboardingPage } from './pages/onboarding';
@@ -39,6 +39,11 @@ const verifyEmailRoute = createRoute({
   path: '/verify-email',
   component: VerifyEmailPage,
 });
+const resetPasswordRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/reset-password',
+  component: ResetPasswordPage,
+});
 const onboardingRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/onboarding',
@@ -63,6 +68,7 @@ const router = createRouter({
     signInRoute,
     createAccountRoute,
     verifyEmailRoute,
+    resetPasswordRoute,
     onboardingRoute,
     dashboardRoute,
     supportRoute,

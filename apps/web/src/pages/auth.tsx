@@ -163,7 +163,9 @@ export function CreateAccountPage() {
 export function VerifyEmailPage() {
   const navigate = useNavigate();
   const pending = getPendingVerification();
-  const [token, setToken] = useState(pending?.token ?? '');
+  const [token, setToken] = useState(
+    () => new URLSearchParams(window.location.search).get('token') ?? pending?.token ?? '',
+  );
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   async function verify(event: FormEvent) {
@@ -205,6 +207,51 @@ export function VerifyEmailPage() {
         <button className="button form-submit">Verify email</button>
         <button type="button" className="button button-ghost form-submit" onClick={resend}>
           Send a new link
+        </button>
+      </form>
+    </AuthLayout>
+  );
+}
+
+export function ResetPasswordPage() {
+  const navigate = useNavigate();
+  const [token] = useState(() => new URLSearchParams(window.location.search).get('token') ?? '');
+  const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function submit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError('');
+    setMessage('');
+    setLoading(true);
+    const data = new FormData(event.currentTarget);
+    try {
+      await api.resetPassword(token, String(data.get('password')));
+      setMessage('Your password was reset. You can now sign in.');
+      setTimeout(() => void navigate({ to: '/sign-in' }), 1200);
+    } catch (cause) {
+      setError((cause as ApiError).message ?? 'That reset link is invalid or expired.');
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <AuthLayout
+      eyebrow="One secure step"
+      title="Choose a new password"
+      description="Use a strong password with at least 12 characters."
+    >
+      <form className="form-stack" onSubmit={submit}>
+        <label>
+          New password
+          <input type="password" name="password" minLength={12} required autoComplete="new-password" />
+        </label>
+        {message && <div className="form-success">{message}</div>}
+        {error && <ErrorMessage error={error} />}
+        <button className="button form-submit" disabled={loading || !token}>
+          {loading ? 'Saving…' : 'Set new password'}
         </button>
       </form>
     </AuthLayout>

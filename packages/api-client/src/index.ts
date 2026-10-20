@@ -77,6 +77,12 @@ export class SonaApiClient {
       body: JSON.stringify({ email }),
     });
   }
+  resetPassword(token: string, newPassword: string) {
+    return this.request<{ reset: true }>('/auth/reset-password', {
+      method: 'POST',
+      body: JSON.stringify({ token, newPassword }),
+    });
+  }
   me() {
     return this.request<AuthUser>('/auth/me');
   }
