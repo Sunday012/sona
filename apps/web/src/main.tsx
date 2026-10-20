@@ -17,6 +17,12 @@ import { SupportPage } from './pages/support';
 import { hasSession } from './lib/session';
 import './styles.css';
 
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    void navigator.serviceWorker.register('/sw.js');
+  });
+}
+
 const rootRoute = createRootRoute({
   component: () => (
     <>

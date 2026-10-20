@@ -1,0 +1,13 @@
+{
+  "name": "Sona — Private support space",
+  "short_name": "Sona",
+  "description": "Professional mental health support with privacy by design.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8f7f2",
+  "theme_color": "#153f36",
+  "icons": [
+    { "src": "/icons/sona.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
